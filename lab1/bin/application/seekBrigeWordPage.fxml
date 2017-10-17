@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="423.0" prefWidth="550.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.FFXController">
+   <children>
+      <Label layoutX="238.0" layoutY="32.0" text="请输入单词" />
+      <Label layoutX="83.0" layoutY="90.0" text="第一个单词" />
+      <Label layoutX="83.0" layoutY="150.0" text="第二个单词" />
+      <Button fx:id="bWbutton" layoutX="260.0" layoutY="218.0" mnemonicParsing="false" onAction="#setBrigeWord" text="ok" />
+      <TextField fx:id="bwword1" layoutX="245.0" layoutY="85.0" prefHeight="30.0" prefWidth="164.0" />
+      <TextField fx:id="bwword2" layoutX="245.0" layoutY="145.0" prefHeight="30.0" prefWidth="164.0" />
+      <TextField fx:id="bwresult" editable="false" layoutX="17.0" layoutY="265.0" prefHeight="94.0" prefWidth="518.0" />
+   </children>
+</AnchorPane>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="460.0" prefWidth="460.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.FFXController">
+   <children>
+      <Label layoutX="61.0" layoutY="105.0" text="第一个单词" />
+      <Label layoutX="61.0" layoutY="160.0" text="第二个单词" />
+      <TextField fx:id="spword1" layoutX="148.0" layoutY="100.0" />
+      <TextField fx:id="spword2" layoutX="148.0" layoutY="155.0" />
+      <Button fx:id="spbutton" layoutX="198.0" layoutY="203.0" mnemonicParsing="false" onAction="#shortestPath" text="ok" />
+      <TextArea fx:id="spresult" editable="false" layoutX="25.0" layoutY="243.0" prefHeight="197.0" prefWidth="410.0" />
+   </children>
+</AnchorPane>
