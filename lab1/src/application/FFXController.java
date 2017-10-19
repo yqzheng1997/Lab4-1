@@ -38,7 +38,7 @@ public class FFXController {
   public static final int MAX = 10000;
   public static HashMap<String, PointInf> graph;
   public static String rand_point;
-  public static String rand_start;
+  public static String randStart;
   public static String rand_pair;
   public static String rand_show;
   public static boolean rand_finish;
@@ -152,6 +152,7 @@ public class FFXController {
     String input = oldText.getText();
     newText.setText("the new text is as follows:" + generateNewText(input));
   }
+  
   @FXML
   void setBrigeWord(ActionEvent event) {
     String ret = queryBridgeWords(bwword1.getText(), bwword2.getText());
@@ -225,6 +226,10 @@ public class FFXController {
     stage.setScene(myScene);
     stage.show();
   }
+  
+  /**
+  * This is first line.
+  */ 
   
   public void buildGraph(String[] strArray) { // function producing the graph
     HashMap<String, PointInf> tgraph = new HashMap<String, PointInf>(); // global variable
@@ -367,7 +372,10 @@ public class FFXController {
     stage.show();
   }
 
-  
+  /**
+   * This is first line.
+   */ 
+   
 
   public String generateNewText(String inputText) { 
     // produce new text according to the bridge word
@@ -402,7 +410,11 @@ public class FFXController {
     stage.setScene(myScene);
     stage.show();
   }
-
+  
+  /**
+   * This is first line.
+   */ 
+   
   @SuppressWarnings("unchecked")
     public String calcShortestPath(String word1, String word2) { 
     // calculate the shortest path between two words
@@ -565,7 +577,10 @@ public class FFXController {
 
   
 
-  
+  /**
+   * This is first line.
+   */ 
+   
 
   
 
@@ -574,24 +589,24 @@ public class FFXController {
       return "";   
     }     
     String ret = "";
-    if (rand_start.equals("")) {
+    if (randStart.equals("")) {
       Random rand = new Random();
       int finish = rand.nextInt(graph.size());
       int count = 1;
       for (String tmp : graph.keySet()) {
         if (count++ == finish) {
           rand_point  = tmp;
-          this.setRand_start(tmp);
+          this.setrandStart(tmp);
           break;
         }
       }
-      ret = rand_start + " ";
+      ret = randStart + " ";
     } else {
-      if (graph.get(rand_start).adj.isEmpty()) {
+      if (graph.get(randStart).adj.isEmpty()) {
         rand_finish = true;
         return "\r\nthe path is over!";
       }
-      for (String value : graph.get(rand_start).adj) {
+      for (String value : graph.get(randStart).adj) {
         ret = ret.equals("") ? value : ret + " " + value;
       }
       String[] strList = ret.split(" ");
@@ -600,10 +615,10 @@ public class FFXController {
       int choice;
       while (true) {
         choice = rand.nextInt(strList.length - cnt);
-        rand_pair = rand_start + "->" + strList[choice];
+        rand_pair = randStart + "->" + strList[choice];
         if (rand_pool.isEmpty() || rand_pool.indexOf(rand_pair) == -1) {
           rand_pool.add(rand_pair);
-          rand_start = ret = strList[choice];
+          randStart = ret = strList[choice];
           ret += " ";
           break;
         } else {
@@ -618,24 +633,24 @@ public class FFXController {
 
   public static HashMap<String, PointInf> getGraph() {
     return graph;
-}
+  }
 
-public static void setGraph(HashMap<String, PointInf> graph) {
+  public static void setGraph(HashMap<String, PointInf> graph) {
     FFXController.graph = graph;
-}
+  }
 
-public static String getRand_start() {
-    return rand_start;
-}
+  public static String getrandStart() {
+    return randStart;
+  }
 
-public static void setRand_start(String rand_start) {
-    FFXController.rand_start = rand_start;
-}
+  public static void setrandStart(String randStart) {
+    FFXController.randStart = randStart;
+  }
 
-void randWalk(Stage stage) {
+  void randWalk(Stage stage) {
     stage.setTitle("Ëæ»úÓÎ×ß");
     rand_pool = new ArrayList<String>();
-    rand_pair = rand_start = rand_point = "";
+    rand_pair = randStart = rand_point = "";
     rand_finish = false;
     Pane myPane = null;
     try {
