@@ -51,22 +51,41 @@ public class FFXController {
 
   @FXML
   private Button showgraphb;
+  @FXML
   private Button seekbrigewordb;
+  @FXML
   private Button createnewtextb;
+  @FXML
   private Button seekshortestpathb;
+  @FXML
   private Button randomwalkb;
   @FXML
   private Button spbutton;
   @FXML
+  private Button ctbutton;
+  @FXML
+  private Button rwnext;
+  @FXML
+  private Button rwend;
+  @FXML
+  private Button bwbutton;
+  @FXML
   private TextField spword1;
+  @FXML
   private TextField spword2;
+  @FXML
   private TextField bwword1;
+  @FXML
   private TextField bwword2;
+  @FXML
   private TextField bwresult;
   @FXML
   private TextArea spresult;
+  @FXML
   private TextArea oldText;
+  @FXML
   private TextArea newText;
+  @FXML
   private TextArea rwresult;
 
 
@@ -127,9 +146,88 @@ public class FFXController {
     Stage stage6 = new Stage();
     randWalk(stage6);
   }
-
+  
+  @FXML
+  void subCreateNewText(ActionEvent event) {
+    String input = oldText.getText();
+    newText.setText("the new text is as follows:" + generateNewText(input));
+  }
+  @FXML
+  void setBrigeWord(ActionEvent event) {
+    String ret = queryBridgeWords(bwword1.getText(), bwword2.getText());
+    if (ret.equals("")) {
+      bwresult.setText("No word1 or word2 in the graph!");
+    } else if (ret.equals(" ")) {
+      bwresult.setText("No bridge words from word1 to word2!");
+    } else {
+      String out = "";
+      String[] strList = ret.split(" ");
+      if (strList.length == 1) {
+        out = out + strList[0];
+      } else {
+        for (int index = 0; index < strList.length; index++) {
+          // form the format
+          if (index == strList.length - 1) {
+            out = out + " and " + strList[index] + ".";
+          } else if (index == strList.length - 2) {
+            out = out + strList[index];
+          } else {
+            out = out + strList[index] + ',';
+          }
+        }
+      }
+      bwresult.setText("The bridge words from word1 to word2 are:" + out + ".");
+    }
+  }
+  
+  @FXML
+  protected void shortestPath(ActionEvent event) {
+    spresult.setText(calcShortestPath(spword1.getText(), spword2.getText()));
+  }
+  
+  @FXML
+  protected void storePath(ActionEvent event) throws IOException {
+    Date date = new Date();
+    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd_HHmmss");
+    String fileName = "D:\\" + dateFormat.format(date) + ".txt";
+    File file = new File(fileName);
+    file.createNewFile();
+    BufferedWriter output = new BufferedWriter(new FileWriter(file));
+    output.write(textToFile);
+    output.close();
+    Stage stage = new Stage();
+    Label label = new Label("文件保存成功，路径为:" + fileName);
+    Pane pane = new Pane();
+    pane.getChildren().add(label);
+    Scene myScene = new Scene(pane);
+    stage.setScene(myScene);
+    stage.show();
+  }
+  
+  @FXML
+  protected void nextStep(ActionEvent event) {
+    String node = randomWalk();
+    rwresult.appendText(node);
+    if (!(node.equals("\r\nthe path is over!") || node.equals("\r\nthe path already exists!"))) {
+      textToFile = textToFile.concat(node);
+    }
+  }
+  
+  void findPath(Stage stage) {
+    stage.setTitle("查找最短路径");
+    Pane myPane = null;
+    try {
+      myPane = (Pane) FXMLLoader.load(getClass().getResource("seekShortestPath.fxml"));
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    Scene myScene = new Scene(myPane);
+    stage.setScene(myScene);
+    stage.show();
+  }
+  
   public void buildGraph(String[] strArray) { // function producing the graph
-    graph = new HashMap<String, PointInf>(); // global variable
+    HashMap<String, PointInf> tgraph = new HashMap<String, PointInf>(); // global variable
     PointInf value;
     int index;
     Integer w;
@@ -137,7 +235,7 @@ public class FFXController {
       if (strArray[i].equals("")) {
         continue;
       } else {
-        value = graph.get(strArray[i]);
+        value = tgraph.get(strArray[i]);
         if (value == null) {
           value = new PointInf();  
         }
@@ -156,9 +254,10 @@ public class FFXController {
           }            
         }
           
-        graph.put(strArray[i], value);
+        tgraph.put(strArray[i], value);
       }
     }
+    this.setGraph(tgraph);
   }
 
   void openText(Stage stage) {
@@ -253,33 +352,7 @@ public class FFXController {
     return ret;
   }
 
-  @FXML
-  void setBrigeWord(ActionEvent event) {
-    String ret = queryBridgeWords(bwword1.getText(), bwword2.getText());
-    if (ret.equals("")) {
-      bwresult.setText("No word1 or word2 in the graph!");
-    } else if (ret.equals(" ")) {
-      bwresult.setText("No bridge words from word1 to word2!");
-    } else {
-      String out = "";
-      String[] strList = ret.split(" ");
-      if (strList.length == 1) {
-        out = out + strList[0];
-      } else {
-        for (int index = 0; index < strList.length; index++) {
-          // form the format
-          if (index == strList.length - 1) {
-            out = out + " and " + strList[index] + ".";
-          } else if (index == strList.length - 2) {
-            out = out + strList[index];
-          } else {
-            out = out + strList[index] + ',';
-          }
-        }
-      }
-      bwresult.setText("The bridge words from word1 to word2 are:" + out + ".");
-    }
-  }
+  
 
   void seekBrige(Stage stage) {
     stage.setTitle("查找桥接词");
@@ -294,11 +367,7 @@ public class FFXController {
     stage.show();
   }
 
-  @FXML
-  void subCreateNewText(ActionEvent event) {
-    String input = oldText.getText();
-    newText.setText("the new text is as follows:" + generateNewText(input));
-  }
+  
 
   public String generateNewText(String inputText) { 
     // produce new text according to the bridge word
@@ -494,51 +563,11 @@ public class FFXController {
     return ret;
   }
 
-  @FXML
-  protected void nextStep(ActionEvent event) {
-    String node = randomWalk();
-    rwresult.appendText(node);
-    if (!(node.equals("\r\nthe path is over!") || node.equals("\r\nthe path already exists!"))) {
-      textToFile = textToFile.concat(node);
-    }
-  }
+  
 
-  @FXML
-  protected void storePath(ActionEvent event) throws IOException {
-    Date date = new Date();
-    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd_HHmmss");
-    String fileName = "D:\\" + dateFormat.format(date) + ".txt";
-    File file = new File(fileName);
-    file.createNewFile();
-    BufferedWriter output = new BufferedWriter(new FileWriter(file));
-    output.write(textToFile);
-    output.close();
-    Stage stage = new Stage();
-    Label label = new Label("文件保存成功，路径为:" + fileName);
-    Pane pane = new Pane();
-    pane.getChildren().add(label);
-    Scene myScene = new Scene(pane);
-    stage.setScene(myScene);
-    stage.show();
-  }
+  
 
-  @FXML
-  protected void shortestPath(ActionEvent event) {
-    spresult.setText(calcShortestPath(spword1.getText(), spword2.getText()));
-  }
-
-  void findPath(Stage stage) {
-    stage.setTitle("查找最短路径");
-    Pane myPane = null;
-    try {
-      myPane = (Pane) FXMLLoader.load(getClass().getResource("seekShortestPath.fxml"));
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
-    Scene myScene = new Scene(myPane);
-    stage.setScene(myScene);
-    stage.show();
-  }
+  
 
   public String randomWalk() {
     if (rand_finish) {
@@ -551,7 +580,8 @@ public class FFXController {
       int count = 1;
       for (String tmp : graph.keySet()) {
         if (count++ == finish) {
-          rand_point = rand_start = tmp;
+          rand_point  = tmp;
+          this.setRand_start(tmp);
           break;
         }
       }
@@ -586,7 +616,23 @@ public class FFXController {
     return ret;
   }
 
-  void randWalk(Stage stage) {
+  public static HashMap<String, PointInf> getGraph() {
+    return graph;
+}
+
+public static void setGraph(HashMap<String, PointInf> graph) {
+    FFXController.graph = graph;
+}
+
+public static String getRand_start() {
+    return rand_start;
+}
+
+public static void setRand_start(String rand_start) {
+    FFXController.rand_start = rand_start;
+}
+
+void randWalk(Stage stage) {
     stage.setTitle("随机游走");
     rand_pool = new ArrayList<String>();
     rand_pair = rand_start = rand_point = "";
