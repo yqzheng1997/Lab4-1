@@ -42,26 +42,24 @@ import java.io.InputStreamReader;
  * <dt>Example usage:
  * <dd>
  * <pre>
- *    GraphViz gv = new GraphViz();
- *    gv.addln(gv.start_graph());
- *    gv.addln("A -> B;");
- *    gv.addln("A -> C;");
- *    gv.addln(gv.end_graph());
- *    System.out.println(gv.getDotSource());
+ *    GraphViz gvvvvv = new GraphViz();
+ *    gvvvvv.addln(gvvvvv.startgraph());
+ *    gvvvvv.addln("A -> B;");
+ *    gvvvvv.addln("A -> C;");
+ *    gvvvvv.addln(gvvvvv.endgraph());
+ *    System.out.println(gvvvvv.getDotSource());
  *
  *    String type = "gif";
  *    File out = new File("out." + type);   // out.gif in this example
- *    gv.writeGraphToFile( gv.getGraph( gv.getDotSource(), type ), out );
+ *    gvvvvv.writeGraphToFile( gvvvvv.getGraph( gvvvvv.getDotSource(), type ), out );
  * </pre>
  * </dd>
  *
  * </dl>
  *
- * @version v0.4, 2011/02/05 (February) -- Patch of Keheliya Gallaba is added. Now you
  * @version v0.3, 2010/11/29 (November) -- Windows support + ability
  * @version v0.2, 2010/07/22 (July) -- bug fix
  * @version v0.1, 2003/12/04 (December) -- first release
- * @author  Laszlo Szathmary (<a href="jabba.laci@gmail.com">jabba.laci@gmail.com</a>)
  */
 
 public class GraphViz {
@@ -117,7 +115,6 @@ public class GraphViz {
   }
   /**
      * Returns the graph as an image in binary format.
-     * @param type Type of the output image to be produced, e.g.: gif, dot, fig, pdf, ps, svg, png.
      * @return A byte array containing the image of the graph.
    */
   
@@ -129,7 +126,7 @@ public class GraphViz {
       dot = writeDotSourceToFile(dotSource);
       if (dot != null) {
         imgStream = get_img_stream(dot, type);
-        if (dot.delete() == false) {
+        if (!dot.delete()) {
           System.err.println("Warning: " + dot.getAbsolutePath() + " could not be deleted!");
         }     
         return imgStream;
@@ -172,7 +169,6 @@ public class GraphViz {
      * It will call the external dot program, and return the image in
      * binary format.
      * @param dot Source of the graph (in dot language).
-     * @param type Type of the output image to be produced, e.g.: gif, dot, fig, pdf, ps, svg, png.
      * @return The image of the graph in .gif format.
    */
     
@@ -195,7 +191,7 @@ public class GraphViz {
       if (in != null) {
         in.close();
       }
-      if (img.delete() == false) {
+      if (!img.delete()) {
         System.err.println("Warning: " + img.getAbsolutePath() + " could not be deleted!"); 
       }               
     } catch (java.io.IOException ioe) {
@@ -233,7 +229,7 @@ public class GraphViz {
      * @return A string to open a graph.
    */
     
-  public String start_graph() {
+  public String startgraph() {
     return "digraph G {" ;
   }
   /**
@@ -241,7 +237,7 @@ public class GraphViz {
      * @return A string to close a graph.
    */
     
-  public String end_graph() {
+  public String endgraph() {
     return "}";
   }
   /**
