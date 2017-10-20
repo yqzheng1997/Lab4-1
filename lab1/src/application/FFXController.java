@@ -205,15 +205,8 @@ public class FFXController {
     stage.show();
   }
   
-  @FXML
-  protected void nextStep(ActionEvent event) {
-    String node = randomWalk();
-    rwresult.appendText(node);
-    if (!(node.equals("\r\nthe path is over!") || node.equals("\r\nthe path already exists!"))) {
-      textToFile = textToFile.concat(node);
-    }
-  }
   
+ 
   void findPath(Stage stage) {
     stage.setTitle("²éÕÒ×î¶ÌÂ·¾¶");
     Pane myPane = null;
@@ -575,7 +568,14 @@ public class FFXController {
     return ret;
   }
 
-  
+  @FXML
+  protected void nextStep(ActionEvent event) {
+    String node = randomWalk();
+    rwresult.appendText(node);
+    if (!(node.equals("\r\nthe path is over!") || node.equals("\r\nthe path already exists!"))) {
+      textToFile = textToFile.concat(node);
+    }
+  }
 
   /**
    * This is first line.
