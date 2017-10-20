@@ -256,7 +256,6 @@ public class FFXController {
       }
     }
     this.setGraph(tgraph);
-    
   }
 
   void openText(Stage stage) {
